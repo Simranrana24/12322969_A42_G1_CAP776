@@ -1,0 +1,3 @@
+email,password,security_question,security_answer
+john.doe@example.com,$2b$12$Q9Fz6aYtCqHPS...,"What is your pet's name?",Fluffy
+jane.smith@example.com,$2b$12$ad8DydJflwTq...,"What is your mother's maiden name?",Johnson
