@@ -5,34 +5,26 @@ import requests
 import sys
 import logging
 
-# Constants
-MAX_LOGIN_ATTEMPTS = 5
-USER_DATA_FILE = "cridentials.csv"
-LOG_FILE = "application.log"  # Log file name
-ALPHA_VANTAGE_API_KEY = "3M42QWJEAKCTCHUP"  # Use your own API key here
-ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query"
+max_login_attempts = 5
+csv_file = "credentials.csv"  
+log_file = "application.log"  
+My_API_key = "G25WS5RCBIPIP3MW" 
+Base_URL = "https://www.alphavantage.co/query"
 
-# --- Setup Logging ---
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO, 
+logging.basicConfig(filename=log_file, level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# --- Helper Functions ---
-
 def hash_password(password):
-    """Hash the password using bcrypt."""
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 def check_password(hashed_password, user_password):
-    """Check the password entered by the user."""
     return bcrypt.checkpw(user_password.encode(), hashed_password)
 
 def validate_email(email):
-    """Validate the email format."""
     email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
     return re.match(email_regex, email) is not None
 
 def validate_password(password):
-    """Ensure password meets the required criteria."""
     if (len(password) < 8 or
         not re.search(r"[A-Z]", password) or
         not re.search(r"[a-z]", password) or
@@ -42,10 +34,9 @@ def validate_password(password):
     return True
 
 def read_user_data():
-    """Load user data from CSV."""
     users = []
     try:
-        with open(USER_DATA_FILE, newline='') as csvfile:
+        with open(csv_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 users.append(row)
@@ -54,22 +45,60 @@ def read_user_data():
     return users
 
 def write_user_data(users):
-    """Write user data to CSV."""
-    with open(USER_DATA_FILE, mode='w', newline='') as csvfile:
+    with open(csv_file, mode='w', newline='') as csvfile:
         fieldnames = ['email', 'password', 'security_question', 'security_answer']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for user in users:
             writer.writerow(user)
 
-# --- Login System ---
+def check_email_exists(email):
+    users = read_user_data()
+    for user in users:
+        if user['email'] == email:
+            return True
+    return False
+
+def sign_up():
+    users = read_user_data()
+    
+    email = input("Enter your email: ")
+    if not validate_email(email):
+        logging.warning(f"Failed to sign up: {email}.")
+        print("Invalid email format.")
+        return
+    
+    if check_email_exists(email):
+        logging.warning(f"Sign-up failed: Email {email} already exists.")
+        print("This email is already registered.")
+        return
+
+    password = input("Create a password: ")
+    if not validate_password(password):
+        logging.warning(f"Sign-up failed for {email} due to invalid password format.")
+        print("Password must be at least 8 characters, contain an uppercase letter, a lowercase letter, a number, and a special character.")
+        return
+    
+    security_question = input("Enter a security question (for password recovery): ")
+    security_answer = input("Enter the answer to your security question: ")
+    
+    new_user = {
+        'email': email,
+        'password': hash_password(password).decode(),
+        'security_question': security_question,
+        'security_answer': security_answer
+    }
+    users.append(new_user)
+    write_user_data(users)
+    
+    logging.info(f"User {email} signed up successfully.")
+    print("Signed-up successfully! You can now log in.")
 
 def login():
-    """Handle user login with limited attempts."""
     users = read_user_data()
     attempts = 0
 
-    while attempts < MAX_LOGIN_ATTEMPTS:
+    while attempts < max_login_attempts:
         email = input("Enter your email: ")
         password = input("Enter your password: ")
 
@@ -80,7 +109,7 @@ def login():
                 return True, user
 
         attempts += 1
-        remaining_attempts = MAX_LOGIN_ATTEMPTS - attempts
+        remaining_attempts = max_login_attempts - attempts
         print(f"Incorrect credentials. {remaining_attempts} attempts remaining.")
         logging.warning(f"Failed login attempt for {email}. {remaining_attempts} attempts remaining.")
 
@@ -88,10 +117,7 @@ def login():
     print("Max login attempts exceeded.")
     sys.exit()
 
-# --- Forgot Password ---
-
 def forgot_password():
-    """Handle password recovery."""
     users = read_user_data()
     email = input("Enter your registered email: ")
 
@@ -101,7 +127,7 @@ def forgot_password():
             if answer == user['security_answer']:
                 new_password = input("Enter your new password: ")
                 if validate_password(new_password):
-                    user['password'] = hash_password(new_password).decode()  # Update hashed password
+                    user['password'] = hash_password(new_password).decode()  
                     write_user_data(users)
                     logging.info(f"Password reset successfully for {email}.")
                     print("Password reset successfully.")
@@ -117,27 +143,27 @@ def forgot_password():
     logging.error(f"Password reset failed. Email not found: {email}.")
     print("Email not found.")
 
-# --- Stock Market API Integration ---
-
 def fetch_stock_data(ticker_symbol):
-    """Fetch stock data using Alpha Vantage API."""
-    url = f"{ALPHA_VANTAGE_BASE_URL}?function=TIME_SERIES_INTRADAY&symbol={ticker_symbol}&interval=1min&apikey={ALPHA_VANTAGE_API_KEY}"
+    """Fetch daily stock data using Alpha Vantage API."""
+    url = f"{Base_URL}?function=TIME_SERIES_DAILY&symbol={ticker_symbol}&apikey={My_API_key}"
     response = requests.get(url)
-    
+
     if response.status_code != 200:
         logging.error(f"Failed to retrieve stock data for {ticker_symbol}. Status Code: {response.status_code}.")
         print("Failed to retrieve data. Check your network connection.")
         return None
 
     data = response.json()
-    
+
     if "Error Message" in data:
         logging.warning(f"Invalid ticker symbol: {ticker_symbol}.")
         print("Invalid ticker symbol.")
         return None
-    
+
     try:
-        latest_data = next(iter(data['Time Series (1min)'].values()))
+        
+        latest_date = next(iter(data['Time Series (Daily)']))
+        latest_data = data['Time Series (Daily)'][latest_date]
         stock_info = {
             'current_price': latest_data['4. close'],
             'open_price': latest_data['1. open'],
@@ -152,21 +178,22 @@ def fetch_stock_data(ticker_symbol):
         print("Data not available.")
         return None
 
-# --- Main Application Flow ---
-
 def main():
     while True:
-        print("\n--- Welcome to Stock Market Console ---")
-        print("1. Login")
-        print("2. Forgot Password")
-        print("3. Exit")
+        print("\n Hey this is my stock market application project")
+        print("Sign Up")
+        print("Login")
+        print("Forgot Password")
+        print("Exit")
 
-        choice = input("Choose an option: ")
+        option = input("Choose an option: ")
 
-        if choice == '1':
+        if option == '1':
+            sign_up()
+        elif option == '2':
             success, user = login()
             if success:
-                ticker = input("Enter the ticker symbol (e.g., AAPL for Apple): ")
+                ticker = input("Enter the ticker symbol: ")
                 stock_data = fetch_stock_data(ticker)
                 if stock_data:
                     print(f"\nStock Data for {ticker}:")
@@ -175,14 +202,14 @@ def main():
                     print(f"High Price: {stock_data['high_price']}")
                     print(f"Low Price: {stock_data['low_price']}")
                     print(f"Volume: {stock_data['volume']}")
-        elif choice == '2':
+        elif option == '3':
             forgot_password()
-        elif choice == '3':
+        elif option == '4':
             logging.info("Application exited.")
             print("Goodbye!")
             sys.exit()
         else:
-            logging.warning(f"Invalid option selected: {choice}.")
+            logging.warning(f"Invalid option selected: {option}.")
             print("Invalid option. Please choose again.")
 
 if __name__ == "__main__":

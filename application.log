@@ -4,3 +4,49 @@
 2024-10-04 23:40:26,271 - WARNING - Failed login attempt for abc12@gmail.com. 4 attempts remaining.
 2024-10-04 23:45:24,022 - WARNING - Failed login attempt for sim.ran@example.com. 3 attempts remaining.
 2024-10-04 23:46:56,630 - WARNING - Failed login attempt for sim.ran1@example.com. 2 attempts remaining.
+2024-10-05 15:19:44,761 - ERROR - User data file not found.
+2024-10-05 15:19:59,195 - ERROR - User data file not found.
+2024-10-05 15:20:25,253 - INFO - User ranasimi123@gmail.com signed up successfully.
+2024-10-05 15:20:53,121 - INFO - User ranasimi123@gmail.com logged in successfully.
+2024-10-05 15:23:39,727 - INFO - Stock data retrieved for AAPL.
+2024-10-05 15:24:25,334 - WARNING - Incorrect security answer for ranasimi123@gmail.com.
+2024-10-05 15:24:55,762 - WARNING - Password reset failed for ranasimi123@gmail.com due to invalid password format.
+2024-10-05 15:25:40,656 - WARNING - Failed login attempt for ranasimi123@gmail.com. 4 attempts remaining.
+2024-10-05 15:25:57,618 - INFO - User ranasimi123@gmail.com logged in successfully.
+2024-10-05 15:26:14,151 - INFO - Stock data retrieved for GLD.
+2024-10-05 15:26:50,592 - INFO - Password reset successfully for ranasimi123@gmail.com.
+2024-10-05 15:26:54,364 - INFO - Application exited.
+2024-10-05 15:39:37,689 - WARNING - Sign-up failed for shiva24@gmail.com due to invalid password format.
+2024-10-05 15:40:45,961 - INFO - User shiva24@gmail.com signed up successfully.
+2024-10-05 15:41:32,681 - INFO - User simran2003@gmail.com signed up successfully.
+2024-10-05 15:41:58,795 - INFO - User shiva24@gmail.com logged in successfully.
+2024-10-05 15:43:29,073 - WARNING - Failed login attempt for Simran2003@gmail.com. 4 attempts remaining.
+2024-10-05 15:44:39,499 - INFO - User simran2003@gmail.com logged in successfully.
+2024-10-05 15:58:48,075 - INFO - User shiva24@gmail.com logged in successfully.
+2024-10-05 15:58:57,599 - ERROR - Data not available for AAPL.
+2024-10-05 15:59:30,724 - INFO - User shiva24@gmail.com logged in successfully.
+2024-10-05 15:59:38,670 - ERROR - Data not available for GOLD.
+2024-10-05 16:01:19,478 - INFO - User simran2003@gmail.com logged in successfully.
+2024-10-05 16:01:27,686 - INFO - Stock data retrieved for GOLD.
+2024-10-05 16:02:06,043 - INFO - User simran2003@gmail.com logged in successfully.
+2024-10-05 16:02:13,502 - INFO - Stock data retrieved for AAPL.
+2024-10-05 16:03:13,383 - INFO - Password reset successfully for simran2003@gmail.com.
+2024-10-05 16:03:18,299 - INFO - Application exited.
+2024-10-05 16:08:08,809 - INFO - User simi24@gmail.com signed up successfully.
+2024-10-05 16:08:42,266 - INFO - User simi24@gmail.com logged in successfully.
+2024-10-05 16:09:02,161 - INFO - Stock data retrieved for GOLD.
+2024-10-05 16:09:27,666 - INFO - User simi24@gmail.com logged in successfully.
+2024-10-05 16:09:36,275 - INFO - Stock data retrieved for AAPL.
+2024-10-05 16:11:22,443 - WARNING - Sign-up failed: Email shiva24@gmail.com already exists.
+2024-10-05 16:11:44,565 - WARNING - Invalid option selected: Simran@24gmail.com.
+2024-10-05 16:11:56,385 - WARNING - Invalid option selected: Simran24@gmail.com.
+2024-10-05 16:12:48,549 - INFO - User Shivansh2005@gmail.com signed up successfully.
+2024-10-05 16:13:14,423 - INFO - User Shivansh2005@gmail.com logged in successfully.
+2024-10-05 16:13:25,043 - WARNING - Invalid ticker symbol: Diamond.
+2024-10-05 16:13:52,372 - INFO - User Shivansh2005@gmail.com logged in successfully.
+2024-10-05 16:14:05,323 - INFO - Stock data retrieved for GOLD.
+2024-10-05 16:14:30,685 - WARNING - Failed login attempt for Shivansh2005@gmail.com. 4 attempts remaining.
+2024-10-05 16:15:10,339 - INFO - User Shivansh2005@gmail.com logged in successfully.
+2024-10-05 16:15:20,149 - WARNING - Invalid ticker symbol: DIAMOND.
+2024-10-05 16:16:12,773 - INFO - Password reset successfully for Shivansh2005@gmail.com.
+2024-10-05 16:16:17,320 - INFO - Application exited.
